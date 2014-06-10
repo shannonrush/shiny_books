@@ -1,0 +1,36 @@
+---
+title: "Books"
+output: html_document
+---
+The goal of this analysis is to explore book genre popularity. Some questions I'll try to answer are: Have genre tastes changed over time? Does genre popularity have a pattern in the course of a year? Do demographics such as age or gender tend to report reading the same types of books?
+
+# The Data
+
+This data was collected via a public API from a popular book social network. All information is self reported, including demographic information, books read, and genre categorization. Unfortunately it is not necessary when reporting having read a book to categorize it by genre but fortunately many users do.
+
+Two types of data were collected: User data, and information about books users self-reported to be "currently reading" 
+
+A note about github: The collected CSV files are too large to share on github. However, you can see exactly how I collected the data at my repo called ['goodreads-analyses'](https://github.com/shannonrush/goodreads-analyses) I'm also happy to share the data I collected if you would like to reproduce my analyses or work with the data yourself. A word of caution: I collected this data too quickly for their tastes and ended up getting IP banned for about a month. Consume at your own risk. 
+
+## User Data
+
+```{r user_data, cache=TRUE}
+    user.cols <- c("userID", "name", "gender", "age", "location", "lastactive", 
+                   "readcount", "currentcount", "wantscount")
+    users <- read.csv("data/users.csv", header=F, col.names=user.cols, stringsAsFactors=F)
+    head(users)
+    dim(users)
+```
+
+## Book Data
+
+```{r book_data, cache=TRUE}
+    book.cols <- c("userID", "bookID", "shelf", "dateadded", "datestarted", "datefinished", "title",
+                   "isbn", "isbn13", "imageurl", "pages", "publisher", "publicationdate", "genres")
+    books <- read.csv("data/currently-reading.csv", header=F, col.names=book.cols, 
+                      stringsAsFactors=F, na.strings="")
+    head(books)
+    dim(books)
+```
+
+
