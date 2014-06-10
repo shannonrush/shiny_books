@@ -1,6 +1,6 @@
 ---
 title: "Books"
-output: html_document
+output: pdf_document
 ---
 The goal of this analysis is to explore book genre popularity. Some questions I'll try to answer are: Have genre tastes changed over time? Does genre popularity have a pattern in the course of a year? Do demographics such as age or gender tend to report reading the same types of books?
 
