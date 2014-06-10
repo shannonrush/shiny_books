@@ -29,8 +29,31 @@ A note about github: The collected CSV files are too large to share on github. H
                    "isbn", "isbn13", "imageurl", "pages", "publisher", "publicationdate", "genres")
     books <- read.csv("data/currently-reading.csv", header=F, col.names=book.cols, 
                       stringsAsFactors=F, na.strings="")
-    head(books)
+    head(books, 1)
     dim(books)
 ```
+
+### Genres
+
+For each book title collected I also collected the names of the "shelves" it was added to. Many users sort their shelves by genre so this seems to be an adequate way to assign a single common genre to each title with a little processing.
+
+First I'll find the most common shelf names and decide upon a set of genres to sort all the titles into, if possible.
+
+```{r count_genres, cache=TRUE}
+    require(stringr)
+    genre.counts <- list()
+    for (genre.set in books$genres) {
+        genres <- str_extract_all(genre.set, "[a-z/-]+")[[1]]
+        for (genre in genres) {
+            if (!genre %in% names(genre.counts)) {
+                genre.counts[genre] <- 1
+            } else {
+                genre.counts[genre] <- genre.counts[[genre]] + 1
+            }
+        }
+    }
+    genre.counts
+```
+
 
 
