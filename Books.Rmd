@@ -1,7 +1,9 @@
 ---
 title: "Books"
 output: pdf_document
+author: Shannon Rush
 ---
+
 The goal of this analysis is to explore book genre popularity. Some questions I'll try to answer are: Have genre tastes changed over time? Does genre popularity have a pattern in the course of a year? Do demographics such as age or gender tend to report reading the same types of books?
 
 # The Data
@@ -52,8 +54,100 @@ First I'll find the most common shelf names and decide upon a set of genres to s
             }
         }
     }
-    genre.counts
 ```
+```{r examine_counts}
+    sorted.counts <- sort(unlist(genre.counts),decreasing = T)
+```
+```{r}
+    sorted.counts[1:100]
+```
+Now to pick a set of genres that most books will be able to be binned into.
+
+```{r create_bins, cache=TRUE}
+    genre.bins <- list("history"=c("history","american history","world history","european history","military history","world war i","wwi","wwii","world war ii","chinese history"),
+                       "classics"=c("classics","classic"),
+                       "historical fiction"=c("historical fiction"),
+                       "fantasy"=c("fantasy"),
+                       "biography"=c("biography","bio","biographies"),
+                       "memoir"=c("memoir","autobiography","memoirs","biography memoir","biographies memoirs"),
+                       "philosophy"=c("philosophy"),
+                       "math and science"=c("science","psychology","sociology","anthropology","economics","mathematics","ecology","natural history","math","biology","statistics","social science","ethnography","library science","social sciences","physics","cognitive science","science nature","maths","astronomy"),
+                       "mystery"=c("mystery","mysteries"),
+                       "politics"=c("politics","political"),
+                       "science fiction"=c("science fiction","sf","scifi","sci fi"),
+                       "romance"=c("romance","romances"),
+                       "young adult"=c("young adult","ya"),
+                       "humor"=c("humor","comedy","humour"),
+                       "religion"=c("religion","christianity","spirituality","religions","theology","islam","buddhism","biblical studies","bible studies","faith","christian living","church","catholic","religion spirituality","islamic books","christian non fiction","judaism","ministry","prayer","islamic","religious studies","buddhist"),
+                       "business"=c("business","management","marketing","business books"),
+                       "self improvement"=c("self help","self improvement","professional development","parenting","parenting books","health","fitness","running","exericse","self development","health fitness","personal development","motivation","health and fitness"),
+                       "reference"=c("reference","art reference","writing reference"),
+                       "thriller"=c("thriller","thrillers"),
+                       "poetry"=c("poetry","poet","poetics"),
+                       "horror"=c("horror"),
+                       "adventure"=c("adventure"),
+                       "literary fiction"=c("literary fiction","literary","lit fic","lit fiction"),
+                       "food"=c("nutrition","foodie","cooking","food","cookbook","cookbooks","recipes","cook books","diets","wine"),
+                       "childrens"=c("childrens","children","kid","kids","children s books"),
+                       "technology"=c("technology","tech","programming","computer","computers","technical","web design","videogames","game design","gaming","science technology"),
+                       "comics"=c("comics","comic","graphic novels","graphic novel"),
+                       "the arts"=c("art","contemporary art","music related","art related","writing","music","design","film","architecture","writing books","literary criticism","photography","art books","cinema","theatre","art history","crafts","graphic design","drama","books on writing","plays","craft","art design","lit crit","theater","screenwriting","filmmaking","fashion","crafty","acting","literary theory","crafting","drawing","art and design","sewing","books on books","writing craft","musicology","film studies","jazz","music books","art photography","arts and crafts","design books","criticism and theory","composition","architecture and theory","opera","dance books"))
+```
+```{r get_genre, cache=TRUE}
+    require(stringr)
+    GetGenre <- function(shelf.set) {
+        shelves <- str_extract_all(shelf.set, "[a-z/-]+")[[1]]
+        for (s in shelves) {
+            shelf <- str_trim(gsub("-"," ",tolower(s)))
+            g <- names(grep(shelf,genre.bins,value=T))
+            if (length(g)>0) return(g[1])
+        }
+        return(NA)
+    }
+```
+```{r bin_books_by_genre, dependson="create_bins", cache=TRUE}
+    books$genre <- sapply(books[,"genres"], GetGenre)
+```
+```{r examine_genre}
+    table(books$genre, useNA = "ifany")
+    genre.nas <- subset(books,is.na(genre))
+    head(genre.nas$genres)
+```
+```{r count_genres_leftover, cache=TRUE, dependson="bin_books_by_genre"}
+    require(stringr)
+    genre.leftovers <- list()
+    for (shelf.set in genre.nas$genres) {
+        shelves <- str_extract_all(shelf.set, "[a-z/-]+")[[1]]
+        for (shelf in shelves) {
+            if (!shelf %in% names(genre.leftovers)) {
+                genre.leftovers[shelf] <- 1
+            } else {
+                genre.leftovers[shelf] <- genre.leftovers[[shelf]] + 1
+            }
+        }
+    }
+```
+Out of the 130396 books only 3752 were unable to be binned. The numbers look pretty reasonable, although 35902 historical fiction did surprise. 
+
+I'll create a new CSV so I don't have to re-run this.
+
+```{r write_books_with_genre, cache=TRUE}
+    write.csv(books, file="data/books_with_genre.csv",row.names=F)
+```
+
+Obviously most of the interesting analysis is going to come from demographics, so now I'll merge in the user information
+
+```{r merge_sets}
+    merged <- merge(books, users)
+    dim(merged)
+```
+That all looks like it should, so I'll write another csv
+
+```{r write_merged, cache=TRUE}
+    write.csv(merged, file="data/books_with_users.csv", row.names=F)
+```
+
+
 
 
 
