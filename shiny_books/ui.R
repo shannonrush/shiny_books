@@ -6,7 +6,7 @@ shinyUI(
     fluidPage(
         titlePanel("Books Analysis"),
         sidebarPanel(
-            checkboxGroupInput("genre", "Genres:", sort(unique(genre.data$genre)), selected=sort(unique(genre.data$genre)))
+            checkboxGroupInput("genres", "Genres:", sort(unique(genre.data$genre)), selected=sort(unique(genre.data$genre)))
         ),
         mainPanel(
             width=9,

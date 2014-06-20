@@ -5,11 +5,14 @@ output: pdf_document
 ---
 
 [X] Data Processing
-[] Create shiny view with check boxes for genres
+[X] Create shiny view with check boxes for genres
+[] React to checkboxes
 [ ] Change date range
 [] By Gender
     [] Genre switches to radio buttons
 [] By location
     [] view switches to map
     
+[] Better color scheme with more discrete colors
 [] Pretty up title and add explanatory text and links
+[] uncheck all
