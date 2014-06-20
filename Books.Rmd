@@ -108,7 +108,7 @@ Now to pick a set of genres that most books will be able to be binned into.
 ```{r bin_books_by_genre, dependson="create_bins", cache=TRUE}
     books$genre <- sapply(books[,"genres"], GetGenre)
 ```
-```{r examine_genre}
+```{r examine_genre, cache=TRUE}
     table(books$genre, useNA = "ifany")
     genre.nas <- subset(books,is.na(genre))
     head(genre.nas$genres)
@@ -146,6 +146,74 @@ That all looks like it should, so I'll write another csv
 ```{r write_merged, cache=TRUE}
     write.csv(merged, file="data/books_with_users.csv", row.names=F)
 ```
+
+## Analysis
+
+*Genres added to currently reading shelf over time*
+
+When thinking about genre popularity and the book social network I think the most important date (out of date added to shelf, date started, and date finished) is the date the book was added to the shelf. This is the time when the user is interested in the book.
+
+I'll also include gender, age, and location in this data set. I think these will provide interesting interactive features for the Shiny app.
+
+```{r genre_time, cache=TRUE}
+    books.users <- read.csv("data/books_with_users.csv")
+    gt <- subset(books.users, !is.na(genre))
+    dateadded <- as.Date(gt$dateadded, format="%a %b %d %H:%M:%S %z %Y")
+    genre.time <- data.frame(dateadded, genre=gt$genre, gender=gt$gender, age=gt$age, location=gt$location)
+    dim(genre.time)
+```
+```{r explore_genre_time}
+    head(genre.time)
+```
+```{r write_genre_time, cache=TRUE}
+    write.csv(genre.time, file="data/processed_books.csv", row.names=F)
+```
+
+## Example Plots
+
+Here are some quick plots to see some examples of what we'll be able to do with this data. These are quick and dirty, we'll save the fancy stuff for the shiny app.
+
+```{r load_packages}
+    require(ggplot2)
+    require(dplyr)
+    require(lubridate)
+```
+
+```{r data_for_plots, cache=TRUE}
+   genre.data <- read.csv("data/processed_books.csv") 
+```
+One genre, historical fiction, by date
+
+```{r hist_fic_by_date}
+    hist.fic <- subset(genre.data, genre=="historical fiction")
+    hist.fic$dateadded <- floor_date(as.Date(hist.fic$dateadded), "month")
+    by_date <- hist.fic %.%
+                group_by(dateadded) %.%
+                summarise(counts=n())
+    print(ggplot(by_date, aes(x=dateadded, y=counts)) + geom_line() + xlab("Date Added") + ylab("Number of Historical Fiction Titles Added"))
+```
+All genres by date
+```{r all_by_date}
+    genre.data$dateadded <- floor_date(as.Date(genre.data$dateadded), "month")
+    by_genre_and_date <- genre.data %.%
+                            group_by(genre, dateadded) %.%
+                            summarise(counts=n())
+    ggplot(by_genre_and_date, aes(x=dateadded, y=counts, color=genre, group=genre)) + geom_line()
+```
+Science Fiction by date and gender
+```{r sf_date_gender}
+    sf <- subset(genre.data, genre=="science fiction")
+    sf_date_gender <- genre.data %.%
+                        group_by(gender, dateadded) %.%
+                        summarise(counts=n())
+    ggplot(sf_date_gender, aes(x=dateadded, y=counts, color=gender, group=gender)) + geom_line()
+```
+
+## Interactive Shiny App
+
+Now to make it shiny! Visit the code in the ui.R and server.R files in the github repo and visit the shiny app at ('https://shanfu.shinyapps.io/shiny_books/')
+
+
 
 
 
