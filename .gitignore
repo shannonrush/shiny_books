@@ -1,3 +1,4 @@
 .Rhistory
 *.csv
+*.Rdata
 Books_cache

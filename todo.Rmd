@@ -1,0 +1,15 @@
+---
+title: "ToDo"
+author: "Shannon Rush"
+output: pdf_document
+---
+
+[X] Data Processing
+[] Create shiny view with check boxes for genres
+[ ] Change date range
+[] By Gender
+    [] Genre switches to radio buttons
+[] By location
+    [] view switches to map
+    
+[] Pretty up title and add explanatory text and links
