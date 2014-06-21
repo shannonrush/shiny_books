@@ -209,9 +209,20 @@ Science Fiction by date and gender
     ggplot(sf_date_gender, aes(x=dateadded, y=counts, color=gender, group=gender)) + geom_line()
 ```
 
+## Rdata
+
+we'll store the data frame in an Rdata file for easy loading in the shiny app
+
+```{r}
+    genre.data <- read.csv("data/processed_books.csv") 
+    genre.data$monthadded <- floor_date(as.Date(genre.data$dateadded), "month")
+    save(genre.data, file="shiny_books/genre_data.Rdata")
+```
+
+
 ## Interactive Shiny App
 
-Now to make it shiny! Visit the code in the ui.R and server.R files in the github repo and visit the shiny app at ('https://shanfu.shinyapps.io/shiny_books/')
+Now to make it shiny! Visit the code in the ui.R and server.R files in the github repo and visit the shiny app at https://shanfu.shinyapps.io/shiny_books/
 
 
 

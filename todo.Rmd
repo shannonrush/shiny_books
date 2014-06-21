@@ -6,8 +6,10 @@ output: pdf_document
 
 [X] Data Processing
 [X] Create shiny view with check boxes for genres
-[] React to checkboxes
+[X] React to checkboxes
 [ ] Change date range
+    [] add monthadded to Rdata
+[] Add tabs
 [] By Gender
     [] Genre switches to radio buttons
 [] By location
