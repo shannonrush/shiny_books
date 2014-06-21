@@ -215,6 +215,7 @@ we'll store the data frame in an Rdata file for easy loading in the shiny app
 
 ```{r}
     genre.data <- read.csv("data/processed_books.csv") 
+    genre.data$dateadded <- as.Date(genre.data$dateadded)
     genre.data$monthadded <- floor_date(as.Date(genre.data$dateadded), "month")
     save(genre.data, file="shiny_books/genre_data.Rdata")
 ```
