@@ -7,7 +7,9 @@ output: pdf_document
 [X] Data Processing
 [X] Create shiny view with check boxes for genres
 [X] React to checkboxes
-[ ] Change date range
+[X] check all
+[X] uncheck all
+[X] Change date range
     [X] add monthadded to Rdata
     [X] add date range selector to UI
     [X] if date range <= 1 year use dateadded instead of monthadded 
@@ -15,9 +17,9 @@ output: pdf_document
 [] Add tabs
 [] By Gender
     [] Genre switches to radio buttons
+[] By Age Group
 [] By location
     [] view switches to map
     
 [] Better color scheme with more discrete colors
 [] Pretty up title and add explanatory text and links
-[] uncheck all

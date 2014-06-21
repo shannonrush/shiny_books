@@ -3,10 +3,11 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 source("helpers.R")
-load("genre_data.Rdata")
+load("data/genre_data.Rdata")
 
 shinyServer(function(input, output) {
     output$plot <- renderPlot({
+        validate(need(input$genres > 0, "Please select at least one genre"))
         start <- as.Date(input$daterange[1])
         end <- as.Date(input$daterange[2])
         selected.data <- subset(genre.data, 
