@@ -14,7 +14,8 @@ output: pdf_document
     [X] add date range selector to UI
     [X] if date range <= 1 year use dateadded instead of monthadded 
     [X] subset data on daterange (use dateadded)
-[] Add tabs
+[X] Add tabs
+    [X] conditionally renderUI based on active tab
 [] By Gender
     [] Genre switches to radio buttons
 [] By Age Group

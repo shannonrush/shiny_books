@@ -6,13 +6,32 @@ source("helpers.R")
 load("data/genre_data.Rdata")
 
 shinyServer(function(input, output) {
-    output$plot <- renderPlot({
-        validate(need(input$genres > 0, "Please select at least one genre"))
-        start <- as.Date(input$daterange[1])
-        end <- as.Date(input$daterange[2])
+    output$genres <- renderUI({
+        list(dateRangeInput('daterange',
+                       label = 'Select Dates To Analyze:',
+                       start = "2006-10-02", end = "2014-02-05"),
+         CheckBoxButton("CheckAllBtn", "checkall", "Check All"),
+         CheckBoxButton("UnCheckAllBtn", "uncheckall", "Uncheck All"),
+         checkboxGroupInput("genres", "Genres:", 
+                            sort(unique(genre.data$genre)), 
+                            selected=c("science fiction","fantasy","horror")))
+    })
+    
+    output$genres_plot <- renderPlot({
+        ## This is to compensate for renderPlot being called before renderUI is finished
+        if (length(input$daterange)==0) {
+            dates <- c("2006-10-02", "2014-02-05")
+            genres <- c("science fiction", "fantasy", "horror")
+        } else {
+            dates <- input$daterange
+            genres <- input$genres
+        }
+        start <- as.Date(dates[1])
+        end <- as.Date(dates[2])
+        validate(need(genres > 0, "Please select at least one genre"))
         selected.data <- subset(genre.data, 
-                                genre %in% input$genres & dateadded <= end & dateadded >= start)
-        if (MonthsInRange(input$daterange) > 12) {
+                                genre %in% genres & dateadded <= end & dateadded >= start)
+        if (MonthsInRange(dates) > 12) {
             selected.data$usedates <- selected.data$monthadded
         } else {
             selected.data$usedates <- selected.data$dateadded
@@ -27,5 +46,5 @@ shinyServer(function(input, output) {
                        axis.title = element_text(size=17),
                        axis.text = element_text(size=15))
         print(t + geom_line())
-    }, height=600, width=950)  
+    }, height=600, width=950)
 })

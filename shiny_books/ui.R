@@ -1,33 +1,27 @@
 library(shiny)
-library(ggplot2)
-load("data/genre_data.Rdata")
-
-CheckBoxButton <- function(inputId, class, text) {
-    tagList(
-        singleton(tags$head(tags$script(src = "js/checkall.js"))),
-        singleton(tags$head(tags$script(src = "js/uncheckall.js"))),
-        tags$button(id = inputId,
-                    class = paste(class,"btn"),
-                    type = "button",
-                    text)
-    )
-}
 
 shinyUI(
     fluidPage(
+        tags$head(
+            tags$link(rel = "stylesheet", type = "text/css", href = "css/application.css"),
+            tags$script(src = "js/checkall.js"),
+            tags$script(src = "js/uncheckall.js")
+        ),
         titlePanel("Books Analysis"),
         sidebarPanel(
-            dateRangeInput('daterange',
-                           label = 'Select Dates To Analyze:',
-                           start = "2006-10-02", end = "2014-02-05"),
-            CheckBoxButton("CheckAllBtn", "checkall", "Check All"),
-            CheckBoxButton("UnCheckAllBtn", "uncheckall", "Uncheck All"),
-            checkboxGroupInput("genres", "Genres:", 
-                               sort(unique(genre.data$genre)), 
-                               selected=c("science fiction","fantasy","horror"))
+            conditionalPanel("input.plottabs=='Genres'", uiOutput("genres")),
+            conditionalPanel("input.plottabs=='By Gender'", uiOutput("gender")),
+            conditionalPanel("input.plottabs=='By Age Group'", uiOutput("age")),
+            conditionalPanel("input.plottabs=='By Location'", uiOutput("location"))
         ),
         mainPanel(
-            width=9,
-            plotOutput("plot")
+            width=9, 
+            tabsetPanel(type="pills", id="plottabs",
+                        tabPanel("Genres",plotOutput("genres_plot")),
+                        tabPanel("By Gender",plotOutput("gender_plot")),
+                        tabPanel("By Age Group",plotOutput("age_plot")),
+                        tabPanel("By Location",plotOutput("location_plot"))
+                )
+            
         )
 ))
