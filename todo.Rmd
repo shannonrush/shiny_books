@@ -16,8 +16,10 @@ output: pdf_document
     [X] subset data on daterange (use dateadded)
 [X] Add tabs
     [X] conditionally renderUI based on active tab
-[] By Gender
-    [] Genre switches to radio buttons
+[X] By Gender
+    [X] Genre switches to radio buttons
+    [X] pretty up plot
+[] refactor out repeating code
 [] By Age Group
 [] By location
     [] view switches to map

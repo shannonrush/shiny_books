@@ -18,9 +18,9 @@ shinyUI(
             width=9, 
             tabsetPanel(type="pills", id="plottabs",
                         tabPanel("Genres",plotOutput("genres_plot")),
-                        tabPanel("By Gender",plotOutput("gender_plot")),
-                        tabPanel("By Age Group",plotOutput("age_plot")),
-                        tabPanel("By Location",plotOutput("location_plot"))
+                        tabPanel("By Gender",plotOutput("gender_plot"))
+                        #tabPanel("By Age Group",plotOutput("age_plot")),
+                        #tabPanel("By Location",plotOutput("location_plot"))
                 )
             
         )
