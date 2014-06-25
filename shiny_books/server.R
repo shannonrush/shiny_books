@@ -31,16 +31,10 @@ shinyServer(function(input, output) {
     output$genres_plot <- renderPlot({
         ## This is to compensate for renderPlot being called before renderUI is finished
         dates <- GetDates(input$genredates)
-        if (length(input$genredates)==0) {
-            genres <- c("science fiction", "fantasy", "horror")
-        } else {
-            genres <- input$genres
-        }
-        start <- as.Date(dates[1])
-        end <- as.Date(dates[2])
+        genres <- if (length(input$genredates)==0) c("science fiction", "fantasy", "horror") else input$genres
         validate(need(genres > 0, "Please select at least one genre"))
         selected.data <- subset(genre.data, 
-                                genre %in% genres & dateadded <= end & dateadded >= start)
+                                genre %in% genres & dateadded <= dates[2] & dateadded >= dates[1])
         selected.data$usedates <- UseDates(selected.data, dates) 
         by_genre_and_date <- selected.data %.%
             group_by(genre, usedates) %.%
@@ -51,15 +45,9 @@ shinyServer(function(input, output) {
     output$gender_plot <- renderPlot({
         ## This is to compensate for renderPlot being called before renderUI is finished
         genderdates <- GetDates(input$genderdates)
-        if (length(input$genderdates)==0) {
-            gendergenre <- "adventure"
-        } else {
-            gendergenre <- input$gendergenre
-        }
-        start <- as.Date(genderdates[1])
-        end <- as.Date(genderdates[2])
+        gendergenre <- if (length(input$genderdates)==0) "adventure" else input$gendergenre
         selected.data <- subset(genre.data, 
-                                genre == gendergenre & dateadded <= end & dateadded >= start)
+                                genre == gendergenre & dateadded <= genderdates[2] & dateadded >= genderdates[1])
         selected.data$usedates <- UseDates(selected.data, genderdates)
         gender.data <- selected.data %.%
             group_by(gender, usedates) %.%

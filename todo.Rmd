@@ -19,10 +19,11 @@ output: pdf_document
 [X] By Gender
     [X] Genre switches to radio buttons
     [X] pretty up plot
-[] refactor out repeating code
+[X] refactor out repeating code
 [] By Age Group
 [] By location
     [] view switches to map
+[] add tests
     
 [] Better color scheme with more discrete colors
 [] Pretty up title and add explanatory text and links

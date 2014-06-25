@@ -16,11 +16,13 @@ UseDates <- function(data, dates) {
 
 GetDates <- function(inputdates) {
     if (length(inputdates)==0) {
-        c("2006-10-02", "2014-02-05")  
+        as.Date(c("2006-10-02", "2014-02-05"))
     } else {
-        inputdates
+        as.Date(inputdates)
     }
 }
+
+
 
 
 
