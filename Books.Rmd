@@ -169,6 +169,52 @@ I'll also include gender, age, and location in this data set. I think these will
     write.csv(genre.time, file="data/processed_books.csv", row.names=F)
 ```
 
+## Geocoding
+
+And of course we need to add latitude and longitude for each location.
+
+```{r to_lat_lng}
+    require(ggmap)
+    ToLatLng <- function(loc) {
+        geo <- geocode(loc)
+        data.frame(loc=loc, lon=geo[1], lat=geo[2])
+    }
+```
+
+```{r}
+    genre.data <- read.csv("data/tmp_gd_ll.csv", stringsAsFactors=F)
+    lls <- read.csv("data/tmp_lls.csv", stringsAsFactors=F)
+```
+```{r}
+    for (i in 1:nrow(genre.data)) {
+        location <- genre.data[i,"location"]
+        if (is.na(genre.data[i,"lon"]) & location!="") {
+            if (!location %in% lls$loc & !location %in% tried) {
+                tried <- c(tried, location)
+                ll <- ToLatLng(location)
+                if (!is.na(ll$lon)) {
+                    lls <- rbind(lls, ll)   
+                }
+            }
+            l <- subset(lls,loc==location)
+            if (nrow(l)==1) {
+                genre.data[i,"lon"] <- l$lon
+                genre.data[i,"lat"] <- l$lat
+            }
+        }
+    }
+```
+
+```{r}
+    write.csv(genre.data,"data/tmp_gd_ll.csv",row.names=F)
+    write.csv(lls,"data/tmp_lls.csv",row.names=F)
+    write.csv(tried, "data/tmp_tried.csv",row.names=F)
+```
+```{r}
+    tried <- lls$loc
+```
+
+
 ## Example Plots
 
 Here are some quick plots to see some examples of what we'll be able to do with this data. These are quick and dirty, we'll save the fancy stuff for the shiny app.
@@ -208,6 +254,11 @@ Science Fiction by date and gender
                         summarise(counts=n())
     ggplot(sf_date_gender, aes(x=dateadded, y=counts, color=gender, group=gender)) + geom_line()
 ```
+Historical Fiction by location
+```{r hf_map}
+    has.ll <- subset(genre.data, !is.na(lon)&location!="")
+```
+
 
 ## Rdata
 
@@ -217,7 +268,7 @@ we'll store the data frame in an Rdata file for easy loading in the shiny app
     genre.data <- read.csv("data/processed_books.csv") 
     genre.data$dateadded <- as.Date(genre.data$dateadded)
     genre.data$monthadded <- floor_date(as.Date(genre.data$dateadded), "month")
-    save(genre.data, file="shiny_books/genre_data.Rdata")
+    save(genre.data, file="data/genre_data.Rdata")
 ```
 
 
