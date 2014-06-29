@@ -20,10 +20,27 @@ output: pdf_document
     [X] Genre switches to radio buttons
     [X] pretty up plot
 [X] refactor out repeating code
-[] By Age Group
+[X] By Age Group
 [] By location
-    [] view switches to map
+    [X] geocode locations in dataset
+    [X] display map with d3js
+    [X] decide on map to use
+    [X] sidebar: genre checkboxes and dates
+        [X] refactor checkbox toggle buttons to get name from button for multiple checkbox sets
+    [X] add a test data point 
+    [X] render points from single genre
+    [X] color points by genre
+        [X] add color array to json mapped to genre
+    [X] style map to better show colors
+    [X] color checkbox labels in map.colors
+    [] map actions that are less jarring
+    
+    [] style map
+    [] add d3 and topojson files to project instead of fetching
 [] add tests
+[] add reactive values
+[X] resolve includeCSS problem
     
 [] Better color scheme with more discrete colors
 [] Pretty up title and add explanatory text and links
+[] Improve styling

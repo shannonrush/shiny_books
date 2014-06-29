@@ -186,6 +186,9 @@ And of course we need to add latitude and longitude for each location.
     lls <- read.csv("data/tmp_lls.csv", stringsAsFactors=F)
 ```
 ```{r}
+    tried <- lls$loc
+```
+```{r}
     for (i in 1:nrow(genre.data)) {
         location <- genre.data[i,"location"]
         if (is.na(genre.data[i,"lon"]) & location!="") {
@@ -210,9 +213,7 @@ And of course we need to add latitude and longitude for each location.
     write.csv(lls,"data/tmp_lls.csv",row.names=F)
     write.csv(tried, "data/tmp_tried.csv",row.names=F)
 ```
-```{r}
-    tried <- lls$loc
-```
+
 
 
 ## Example Plots

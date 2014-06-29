@@ -1,4 +1,4 @@
-GenrePlot <- function(data) {
+GenrePlot <- function(data, genres) {
     p <- ggplot(data, aes(x=usedates, y=counts, color=genre, group=genre))
     l <- p + xlab("Date Added")+ylab("Number Added")+ggtitle("Genre Popularity Over Time")
     t <- l + DefaultTheme()

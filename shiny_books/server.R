@@ -1,10 +1,4 @@
-library(shiny)
-library(ggplot2)
-library(lubridate)
-library(dplyr)
-library(Hmisc)
-source("helpers/helpers.R")
-load("data/genre_data.Rdata")
+sorted.genres <- sort(unique(genre.data$genre))
 
 shinyServer(function(input, output) {
     # Side Panel
@@ -12,10 +6,10 @@ shinyServer(function(input, output) {
         list(dateRangeInput('genredates',
                        label = 'Select Dates To Analyze:',
                        start = "2006-10-02", end = "2014-02-05"),
-         CheckBoxButton("CheckAllBtn", "checkall", "Check All"),
-         CheckBoxButton("UnCheckAllBtn", "uncheckall", "Uncheck All"),
+         CheckBoxButton("CheckAllBtn", "checkall", "genres", "Check All"),
+         CheckBoxButton("UnCheckAllBtn", "uncheckall", "genres", "Uncheck All"),
          checkboxGroupInput("genres", "Genres:", 
-                            sort(unique(genre.data$genre)), 
+                            sorted.genres, 
                             selected=c("science fiction","fantasy","horror")))
     })
     
@@ -24,7 +18,7 @@ shinyServer(function(input, output) {
                             label = 'Select Dates To Analyze:',
                             start = "2006-10-02", end = "2014-02-05"),
              radioButtons("gendergenre", 
-                          choices=sort(unique(genre.data$genre)), 
+                          choices=sorted.genres, 
                           label="")
              )
     })
@@ -33,9 +27,14 @@ shinyServer(function(input, output) {
         list(dateRangeInput('agedates',
                             label = 'Select Dates To Analyze:',
                             start = "2006-10-02", end = "2014-02-05"),
-             radioButtons("agegenre", 
-                          choices=sort(unique(genre.data$genre)), 
-                          label="")
+             radioButtons("agegenre", choices=sorted.genres, label="")
+        )
+    })
+    
+    output$location <- renderUI({
+        list(CheckBoxButton("CheckAllBtn", "checkall", "locgenres", "Check All"),
+             CheckBoxButton("UnCheckAllBtn", "uncheckall", "locgenres", "Uncheck All"),
+             checkboxGroupInput("locgenres", "Genres:", sorted.genres, selected="adventure")
         )
     })
     
@@ -51,7 +50,7 @@ shinyServer(function(input, output) {
         by_genre_and_date <- selected.data %.%
             group_by(genre, usedates) %.%
             summarise(counts=n())
-        GenrePlot(by_genre_and_date)
+        GenrePlot(by_genre_and_date, genres)
     }, height=600, width=950)
     
     output$gender_plot <- renderPlot({
@@ -79,5 +78,17 @@ shinyServer(function(input, output) {
             group_by(binnedages, usedates) %.%
             summarise(counts=n())
         AgePlot(age.data, agegenre)
+    }, height=600, width=950)
+    
+    output$location_ui <- renderUI({
+        if (length(input$locgenres)>0) {
+            selected.data <- subset(genre.data, genre %in% input$locgenres & !is.na(lon))
+            loc.data <- selected.data[,c("genre","lon","lat")]
+            loc.data$colors <- unname(sapply(loc.data$genre, 
+                                            function(x) map.colors[match(x, sorted.genres)]))
+            loc.json <- toJSON(loc.data)
+            includeScript("www/js/empty.js", type="text/javascript", id="locdata", 
+                          paste("var points=",loc.json))
+        }
     })
 })

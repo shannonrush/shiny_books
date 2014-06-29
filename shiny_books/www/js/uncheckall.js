@@ -1,13 +1,7 @@
 $(document).on("click", "button.uncheckall", function(evt) {
-    
-    // evt.target is the button that was clicked
-    var el = $('input[type="checkbox"][name="genres"]');
-  
-  // Check all genres checkboxes
-  el.prop("checked" , false);
-
-  // Raise an event to signal that the value changed
-  el.trigger("change");
+    var el = $('input[type="checkbox"][name='+evt.target.name+']');
+    el.prop("checked" , false);
+    el.trigger("change");
 });
 
 var uncheckallBinding = new Shiny.InputBinding();

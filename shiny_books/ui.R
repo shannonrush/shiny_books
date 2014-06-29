@@ -3,11 +3,15 @@ library(shiny)
 shinyUI(
     fluidPage(
         tags$head(
-            tags$link(rel = "stylesheet", type = "text/css", href = "css/application.css"),
-            tags$script(src = "js/checkall.js"),
-            tags$script(src = "js/uncheckall.js")
+            includeCSS("www/css/application.css"),
+            includeCSS("www/css/map.css"),
+            includeScript("www/js/checkall.js"),
+            includeScript("www/js/uncheckall.js"),
+            includeScript("http://d3js.org/topojson.v1.min.js"),
+            includeScript("http://d3js.org/d3.v3.min.js"),
+            includeScript("www/js/map.js")
         ),
-        titlePanel("Books Analysis"),
+        titlePanel("Goodreads Analysis"),
         sidebarPanel(
             conditionalPanel("input.plottabs=='Genres'", uiOutput("genres")),
             conditionalPanel("input.plottabs=='By Gender'", uiOutput("gender")),
@@ -19,9 +23,10 @@ shinyUI(
             tabsetPanel(type="pills", id="plottabs",
                         tabPanel("Genres",plotOutput("genres_plot")),
                         tabPanel("By Gender",plotOutput("gender_plot")),
-                        tabPanel("By Age Group",plotOutput("age_plot"))
-                        #tabPanel("By Location",plotOutput("location_plot"))
+                        tabPanel("By Age Group",plotOutput("age_plot")),
+                        tabPanel("By Location",uiOutput("location_ui"))
                 )
             
-        )
+        ),
+        div(id="map", class="hidden")
 ))

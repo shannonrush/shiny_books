@@ -1,5 +1,5 @@
 $(document).on("click", "button.checkall", function(evt) {
-    var el = $('input[type="checkbox"][name="genres"]');
+    var el = $('input[type="checkbox"][name='+evt.target.name+']');
     el.prop("checked" , true);
     el.trigger("change");
 });
