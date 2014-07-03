@@ -7,6 +7,7 @@ library(RJSONIO)
 library(RColorBrewer)
 
 source("helpers/helpers.R")
+source("config/keys.R")
 load("data/genre_data.Rdata")
 
 col <- c(brewer.pal(12, "Paired"),brewer.pal(12,"Set3"))

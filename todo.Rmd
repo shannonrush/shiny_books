@@ -34,13 +34,16 @@ output: pdf_document
     [X] style map to better show colors
     [X] color checkbox labels in map.colors
     [] map actions that are less jarring
-    
+    [] BUG: when no genres selected adventure still loaded
     [] style map
     [] add d3 and topojson files to project instead of fetching
+[] By location v2
+    [X] display google map
+    [] 
 [] add tests
 [] add reactive values
 [X] resolve includeCSS problem
     
-[] Better color scheme with more discrete colors
+[] Use map colors for all plots
 [] Pretty up title and add explanatory text and links
 [] Improve styling

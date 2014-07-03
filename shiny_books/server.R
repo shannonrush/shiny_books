@@ -81,14 +81,6 @@ shinyServer(function(input, output) {
     }, height=600, width=950)
     
     output$location_ui <- renderUI({
-        if (length(input$locgenres)>0) {
-            selected.data <- subset(genre.data, genre %in% input$locgenres & !is.na(lon))
-            loc.data <- selected.data[,c("genre","lon","lat")]
-            loc.data$colors <- unname(sapply(loc.data$genre, 
-                                            function(x) map.colors[match(x, sorted.genres)]))
-            loc.json <- toJSON(loc.data)
-            includeScript("www/js/empty.js", type="text/javascript", id="locdata", 
-                          paste("var points=",loc.json))
-        }
+        
     })
 })

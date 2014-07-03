@@ -1,15 +1,17 @@
-library(shiny)
-
 shinyUI(
     fluidPage(
         tags$head(
             includeCSS("www/css/application.css"),
-            includeCSS("www/css/map.css"),
+            #includeCSS("www/css/map.css"),
+            includeCSS("www/css/location.css"),
             includeScript("www/js/checkall.js"),
             includeScript("www/js/uncheckall.js"),
-            includeScript("http://d3js.org/topojson.v1.min.js"),
-            includeScript("http://d3js.org/d3.v3.min.js"),
-            includeScript("www/js/map.js")
+            #includeScript("http://d3js.org/topojson.v1.min.js"),
+            #includeScript("http://d3js.org/d3.v3.min.js"),
+            #includeScript("www/js/map.js")
+            includeScript(paste0("http://maps.googleapis.com/maps/api/js?key=",google_maps_key),
+                          type="text/javascript"),
+            includeScript("www/js/location.js")
         ),
         titlePanel("Goodreads Analysis"),
         sidebarPanel(
@@ -26,7 +28,7 @@ shinyUI(
                         tabPanel("By Age Group",plotOutput("age_plot")),
                         tabPanel("By Location",uiOutput("location_ui"))
                 )
-            
         ),
-        div(id="map", class="hidden")
+        div(id="map", class="noshow span9")
 ))
+
