@@ -9,8 +9,9 @@ shinyUI(
             #includeScript("http://d3js.org/topojson.v1.min.js"),
             #includeScript("http://d3js.org/d3.v3.min.js"),
             #includeScript("www/js/map.js")
-            includeScript(paste0("http://maps.googleapis.com/maps/api/js?key=",google_maps_key),
-                          type="text/javascript"),
+            tags$script(src=paste0("https://maps.googleapis.com/maps/api/js?key=",google_maps_key),
+                                   type="text/javascript"),
+            includeScript("www/js/location_data.js"),
             includeScript("www/js/location.js")
         ),
         titlePanel("Goodreads Analysis"),
@@ -29,6 +30,6 @@ shinyUI(
                         tabPanel("By Location",uiOutput("location_ui"))
                 )
         ),
-        div(id="map", class="noshow span9")
+        div(id="map", class="span9", style="visibility:hidden")
 ))
 

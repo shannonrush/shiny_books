@@ -32,10 +32,7 @@ shinyServer(function(input, output) {
     })
     
     output$location <- renderUI({
-        list(CheckBoxButton("CheckAllBtn", "checkall", "locgenres", "Check All"),
-             CheckBoxButton("UnCheckAllBtn", "uncheckall", "locgenres", "Uncheck All"),
-             checkboxGroupInput("locgenres", "Genres:", sorted.genres, selected="adventure")
-        )
+        checkboxGroupInput("locgenres", "Genres:", sorted.genres)
     })
     
     # Main Panel

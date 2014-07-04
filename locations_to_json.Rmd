@@ -1,0 +1,47 @@
+---
+title: "locations_to_json"
+author: "Shannon Rush"
+date: "July 4, 2014"
+output: html_document
+---
+
+Load genre data
+```{r}
+    load("shiny_books/data/genre_data.Rdata")
+```
+Exclude data with no location
+```{r}
+    locations.data <- subset(genre.data, !is.na(lon))
+```
+Include only genre, lat, lon
+```{r}
+    limited.locations <- locations.data[,c("genre","lat","lon")]
+```
+Group by genre and lat/lon with counts
+```{r}
+    grouped <- limited.locations %.% group_by(genre, lat, lon) %.% summarise(counts=n())
+```
+Split into multiple data frames by genre
+```{r}
+    groups <- split(grouped,grouped$genre)
+```
+remove genres from each
+```{r}
+    locations <- lapply(groups, function(x) as.data.frame(x)[,2:4])
+```
+to json
+```{r}
+    grouped.json <- toJSON(locations,collapse="")
+```
+
+cleanup json string
+```{r}
+    loc.json <- str_replace_all(grouped.json,"\"","")
+    loc.json <- str_replace_all(loc.json,"\n","")
+```
+
+
+
+
+
+

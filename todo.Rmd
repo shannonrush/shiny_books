@@ -39,7 +39,13 @@ output: pdf_document
     [] add d3 and topojson files to project instead of fetching
 [] By location v2
     [X] display google map
-    [] 
+    [X] can relative frequency be displayed with bubbles?
+    [X] Add circle symbol marker to map for test
+    [X] re-add color labels
+    [X] build location data
+    [X] remove markers
+    [] scale markers
+[] pull out unused js/css
 [] add tests
 [] add reactive values
 [X] resolve includeCSS problem
