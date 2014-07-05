@@ -1,18 +1,14 @@
 shinyUI(
     fluidPage(
         tags$head(
-            includeCSS("www/css/application.css"),
-            #includeCSS("www/css/map.css"),
-            includeCSS("www/css/location.css"),
-            includeScript("www/js/checkall.js"),
-            includeScript("www/js/uncheckall.js"),
-            #includeScript("http://d3js.org/topojson.v1.min.js"),
-            #includeScript("http://d3js.org/d3.v3.min.js"),
-            #includeScript("www/js/map.js")
+            tags$link(rel="stylesheet", type="text/css", href="css/application.css"),
+            tags$link(rel="stylesheet", type="text/css", href="css/location.css"),
+            tags$script(src="js/checkall.js", type="text/javascript"),
+            tags$script(src="js/uncheckall.js", type="text/javascript"),
             tags$script(src=paste0("https://maps.googleapis.com/maps/api/js?key=",google_maps_key),
                                    type="text/javascript"),
-            includeScript("www/js/location_data.js"),
-            includeScript("www/js/location.js")
+            tags$script(src="js/location_data.js", type="text/javascript"),
+            tags$script(src="js/location.js", type="text/javascript")
         ),
         titlePanel("Goodreads Analysis"),
         sidebarPanel(
@@ -24,10 +20,10 @@ shinyUI(
         mainPanel(
             width=9, 
             tabsetPanel(type="pills", id="plottabs",
-                        tabPanel("Genres",plotOutput("genres_plot")),
-                        tabPanel("By Gender",plotOutput("gender_plot")),
-                        tabPanel("By Age Group",plotOutput("age_plot")),
-                        tabPanel("By Location",uiOutput("location_ui"))
+                        tabPanel("Genres", plotOutput("genres_plot")),
+                        tabPanel("By Gender", plotOutput("gender_plot")),
+                        tabPanel("By Age Group", plotOutput("age_plot")),
+                        tabPanel("By Location", uiOutput("location_ui"))
                 )
         ),
         div(id="map", class="span9", style="visibility:hidden")

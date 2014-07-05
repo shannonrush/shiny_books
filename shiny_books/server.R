@@ -76,8 +76,4 @@ shinyServer(function(input, output) {
             summarise(counts=n())
         AgePlot(age.data, agegenre)
     }, height=600, width=950)
-    
-    output$location_ui <- renderUI({
-        
-    })
 })

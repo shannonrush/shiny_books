@@ -21,7 +21,7 @@ output: pdf_document
     [X] pretty up plot
 [X] refactor out repeating code
 [X] By Age Group
-[] By location
+[X] By location
     [X] geocode locations in dataset
     [X] display map with d3js
     [X] decide on map to use
@@ -33,10 +33,6 @@ output: pdf_document
         [X] add color array to json mapped to genre
     [X] style map to better show colors
     [X] color checkbox labels in map.colors
-    [] map actions that are less jarring
-    [] BUG: when no genres selected adventure still loaded
-    [] style map
-    [] add d3 and topojson files to project instead of fetching
 [] By location v2
     [X] display google map
     [X] can relative frequency be displayed with bubbles?
@@ -45,7 +41,7 @@ output: pdf_document
     [X] build location data
     [X] remove markers
     [] scale markers
-[] pull out unused js/css
+    [] pull out unused js/css
 [] add tests
 [] add reactive values
 [X] resolve includeCSS problem
