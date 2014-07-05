@@ -31,6 +31,10 @@ function initMarkers() {
     }
 }
 
+function scaleForCount(count) {
+    return (count > 150) ? 15 : Math.ceil(count/10)+1;
+}
+
 function markersForGenre(genre, color) {
     genre_markers = [];
     locs = locations[genre];
@@ -44,10 +48,10 @@ function markersForGenre(genre, color) {
                 position: ll,
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
-                    scale: 2,
+                    scale: scaleForCount(counts[i]),
                     fillColor:color,
                     fillOpacity:0.5,
-                    strokeWeight:1
+                    strokeWeight:0.5
                 }
             })
             genre_markers.push(marker);

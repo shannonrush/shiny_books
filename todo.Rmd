@@ -41,7 +41,7 @@ output: pdf_document
     [X] build location data
     [X] remove markers
     [] scale markers
-    [] pull out unused js/css
+    [x] pull out unused js/css
 [] add tests
 [] add reactive values
 [X] resolve includeCSS problem
