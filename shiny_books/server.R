@@ -35,6 +35,15 @@ shinyServer(function(input, output) {
         checkboxGroupInput("locgenres", "Genres:", sorted.genres)
     })
     
+    output$about <- renderUI({
+        list(
+            p("* ",
+              a("Project Github Repo", href="https://github.com/shannonrush/shiny_books")),
+            p("* ",
+              a("Data Collection and Processing Document", href="https://github.com/shannonrush/shiny_books/blob/master/Books.pdf?raw=true"))
+            )
+    })
+    
     # Main Panel
     output$genres_plot <- renderPlot({
         ## This is to compensate for renderPlot being called before renderUI is finished
@@ -76,4 +85,17 @@ shinyServer(function(input, output) {
             summarise(counts=n())
         AgePlot(age.data, agegenre)
     }, height=600, width=950)
+    
+    output$about_ui <- renderUI({
+        list(
+            p("* The goal of this project is to collect and analyze information about book genre popularity"),
+            p("* Information about how the data was collected and processed can be found ",
+               a("in Books.pdf", href="https://github.com/shannonrush/shiny_books/blob/master/Books.pdf?raw=true")),
+            p("* All code and R markdown, including the Shiny files, are accessible ",
+              a("on Github", href="https://github.com/shannonrush/shiny_books")),
+            p("* Technical tools for this project included: R, Shiny, ggplot2, R markdown, knitr, Ruby, and JavaScript"),
+            p("* I am currently available for full time or project work. Feel free to ",
+              a("contact me", href="mailto:shannonmrush@gmail.com"))
+        )
+    })
 })

@@ -33,19 +33,19 @@ output: pdf_document
         [X] add color array to json mapped to genre
     [X] style map to better show colors
     [X] color checkbox labels in map.colors
-[] By location v2
+[X] By location v2
     [X] display google map
     [X] can relative frequency be displayed with bubbles?
     [X] Add circle symbol marker to map for test
     [X] re-add color labels
     [X] build location data
     [X] remove markers
-    [] scale markers
+    [X] scale markers
     [x] pull out unused js/css
 [] add tests
 [] add reactive values
 [X] resolve includeCSS problem
-    
+[] Date Bug: don't process until dates are entered - or disallow typing in dates, only allow picking
 [] Use map colors for all plots
 [] Pretty up title and add explanatory text and links
 [] Improve styling
